@@ -1,0 +1,130 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .resultBox {
+            margin-top: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .resultLabel {
+            margin-top: 15px;
+            text-align: center;
+        }
+        .externalLink {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Link Generator</h1>
+    
+    <input id="passcodeInput" type="text" placeholder="Enter Passcode" />
+    <button id="validateBtn">Submit</button>
+    
+    <div id="linkSection" style="display:none;">
+        <input id="jdUrlInput" type="text" placeholder="Enter the jd_url here" />
+        <input id="utmInput" type="text" placeholder="Enter UTM parameters here" />
+        <button id="generateLinksBtn">Generate Links</button>
+
+        <div class="resultLabel">EDM/Web Link:</div>
+        <div id="generatedLink" class="resultBox"></div>
+
+        <div class="resultLabel">Deeplink:</div>
+        <div id="generatedDeepLink" class="resultBox"></div>
+
+        <div class="resultLabel">ACS Deeplink:</div>
+        <div id="generatedAcsDeepLink" class="resultBox"></div>
+
+        <div class="resultLabel">UTM Link:</div>
+        <div id="generatedUtmLink" class="resultBox"></div>
+
+        <div class="externalLink">
+            <a href="https://docs.google.com/presentation/d/1qQaMiSc2s8JS9l9p68Nmc8HPOmm60Maj62C18wv9i_c/edit?slide=id.g389c25cbab9_0_38#slide=id.g389c25cbab9_0_38" target="_blank">Open Google Slides Presentation</a>
+        </div>
+    </div>
+
+    <script>
+        const correctPasscode = "bug";
+
+        document.getElementById('validateBtn').addEventListener('click', function() {
+            const userPasscode = document.getElementById('passcodeInput').value;
+            if (userPasscode === correctPasscode) {
+                document.getElementById('linkSection').style.display = 'block';
+                document.getElementById('passcodeInput').style.display = 'none';
+                document.getElementById('validateBtn').style.display = 'none';
+            } else {
+                alert("Incorrect passcode. Please try again.");
+            }
+        });
+
+        // Generate Links
+        document.getElementById('generateLinksBtn').addEventListener('click', function() {
+            let jd_url = document.getElementById('jdUrlInput').value;
+            let utm_params = document.getElementById('utmInput').value;
+            let utm_param = '&utm_source=';
+            let tp_url = 'https://shkpmalls.shkp.com/upload/check/checkInstallApp.jsp?';
+            let param = 'tenantmodule?redirecturl=';
+            let tp_deeplink = 'openSHKMall://tenantmodule?redirecturl=';
+
+            // Generate EDM/Web link
+            let edmLink = tp_url + encodeURIComponent(param + encodeURIComponent(jd_url));
+            // Generate Deeplink
+            let deeplink = tp_deeplink + encodeURIComponent(jd_url);
+            // Generate ACS Deeplink
+            let deeplinkForAcs = tp_deeplink + encodeURIComponent(encodeURIComponent(jd_url));
+            // Generate UTM Link
+            let utmLink = tp_url + encodeURIComponent(param + encodeURIComponent(jd_url)) + (utm_param + utm_params);
+            //let utmLink = tp_url + encodeURIComponent(param + encodeURIComponent(jd_url)) + (utm_param + utm_params : '');
+
+            // Display the generated links
+            document.getElementById('generatedLink').innerText = edmLink;
+            document.getElementById('generatedDeepLink').innerText = deeplink;
+            document.getElementById('generatedAcsDeepLink').innerText = deeplinkForAcs;
+            document.getElementById('generatedUtmLink').innerText = utmLink;
+        });
+    </script>
+</body>
+</html>
