@@ -119,7 +119,7 @@
             // Generate ACS Deeplink
             let deeplinkForAcs = tp_deeplink + encodeURIComponent(encodeURIComponent(jd_url));
             // Generate UTM Link
-            let utmLink = tp_url + encodeURIComponent(param + encodeURIComponent(jd_url)) + (utm_param + utm_params);
+            let utmLink = tp_url + encodeURIComponent(param + encodeURIComponent(jd_url)) + encodeURIComponent(utm_param + utm_params);
 
             // Display the generated links
             document.getElementById('generatedLink').innerText = edmLink;
